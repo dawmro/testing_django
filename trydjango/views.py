@@ -13,13 +13,19 @@ def home_view(request):
     """
     random_id = random.randint(1,2)
     article_obj = Article.objects.get(id=random_id)   
-    H1_STRING = f"""
-    <h1>{article_obj.title} (id: {article_obj.id})!</h1>
-    """
-    P_STRING = f"""
-    <p>{article_obj.content}!</p>
-    """
-    HTML_STRING = H1_STRING + P_STRING
+
+    # put data into context dict
+    context = {
+        "id": article_obj.id,
+        "title": article_obj.title,
+        "content": article_obj.content,
+    }
+    # unpack context dict to html string
+    HTML_STRING= """
+    <h1>{title} (id: {id})!</h1>
+    <p>{content}!</p>
+    """.format(**context)
+
 
     return HttpResponse(HTML_STRING)
 
