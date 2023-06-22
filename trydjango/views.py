@@ -4,7 +4,7 @@ to render html webpages
 from django.http import HttpResponse
 from articles.models import Article
 import random
-
+from django.template.loader import render_to_string
 
 def home_view(request):
     """
@@ -20,12 +20,7 @@ def home_view(request):
         "title": article_obj.title,
         "content": article_obj.content,
     }
-    # unpack context dict to html string
-    HTML_STRING= """
-    <h1>{title} (id: {id})!</h1>
-    <p>{content}!</p>
-    """.format(**context)
-
+    HTML_STRING = render_to_string("home-view.html", context=context) 
 
     return HttpResponse(HTML_STRING)
 
