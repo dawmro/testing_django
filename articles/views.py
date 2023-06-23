@@ -36,10 +36,12 @@ def article_detail_view(request, id=None):
 
 
 def article_create_view(request):
+    context = {}
     if request.method == "POST":
         title = request.POST.get("title")
         content = request.POST.get("content")
-        Article.objects.create(title=title, content=content)
-    context = {}
+        article_object = Article.objects.create(title=title, content=content)
+        context["object"] = article_object
+        context["created"] = True
 
     return render(request, "articles/create.html", context=context)
