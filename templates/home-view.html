@@ -7,7 +7,9 @@
 <h2>More articles:</h2>
 <ul>
     {% for article in articles_list %}
-        <li>{{ article.title }}</li>
+        {% if article.title %}
+            <li><a href='/articles/{{ article.title }}'>{{ article.title}}</a></li>
+        {% endif %}
     {% endfor %}
 </ul>
 {% endblock content %}
