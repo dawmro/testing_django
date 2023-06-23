@@ -3,4 +3,11 @@
 {% block content %}
 <h1>{{ title }} (id: {{ id }})!</h1>
 <p>{{ content }}!</p>
+
+<h2>More articles:</h2>
+<ul>
+    {% for article in articles_list %}
+        <li>{{ article.title }}</li>
+    {% endfor %}
+</ul>
 {% endblock content %}

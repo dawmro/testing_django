@@ -13,9 +13,11 @@ def home_view(request):
     """
     random_id = random.randint(1,2)
     article_obj = Article.objects.get(id=random_id)   
-
+    articles_queryset = Article.objects.all() 
+    
     # put data into context dict
     context = {
+        "articles_list": articles_queryset,
         "id": article_obj.id,
         "title": article_obj.title,
         "content": article_obj.content,
