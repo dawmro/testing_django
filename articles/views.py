@@ -12,7 +12,7 @@ def article_search_view(request):
         query = int(query_dict.get("q"))
     except:
         query = None
-        
+
     article_obj = None
     if query is not None:
         article_obj = Article.objects.get(id=query)
@@ -33,3 +33,10 @@ def article_detail_view(request, id=None):
         "object": article_obj,
     }
     return render(request, "articles/detail.html", context=context)
+
+
+def article_create_view(request):
+
+    context = {}
+
+    return render(request, "articles/create.html", context=context)

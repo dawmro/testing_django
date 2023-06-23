@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+<div style="margin-top:30px;">
+    {% block content %}
+        <form method="POST">
+            <input type="text", name="title" placeholder="Your Title" />
+            <textarea name="content" placeholder="Your Content"> </textarea>
+            <button type="submit">Create Article</button>
+        </form>
+    {% endblock content %}
+</div>
