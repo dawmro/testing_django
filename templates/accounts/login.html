@@ -14,6 +14,9 @@
             <label>Password: </label>
             <input type="password" name="password" placeholder="password" />
         </div>
+        {% if error %}
+        <p style="color:red">{{ error }}</p>
+        {% endif %}
         <button type="submit">Login</button>
     </form>
 </div>
