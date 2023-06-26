@@ -39,7 +39,7 @@ def logout_view(request):
 
 def register_view(request):
     form = UserCreationForm(request.POST or None)
-    if form.is_valid:
+    if form.is_valid():
         user_obj = form.save()
         return redirect("/login")
 
