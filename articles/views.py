@@ -38,24 +38,18 @@ def article_detail_view(request, id=None):
 
 @login_required
 def article_create_view(request):
-    # create form to be rendered
-    form = ArticleForm()
+    # take data from POST request or create form to be rendered
+    form = ArticleForm(request.POST or None)
     context = {
         "form": form,
     }
-
-    if request.method == "POST":
-        # pass all data to instance of class
-        form = ArticleForm(request.POST)
-        # bring back context of form to display errors
-        context["form"] = form
-        # validate data
-        if form.is_valid():
-            # get cleaned data from form
-            title = form.cleaned_data.get("title")
-            content = form.cleaned_data.get("content")
-            article_object = Article.objects.create(title=title, content=content)
-            context["object"] = article_object
-            context["created"] = True
+    # validate data
+    if form.is_valid():
+        # get cleaned data from form
+        title = form.cleaned_data.get("title")
+        content = form.cleaned_data.get("content")
+        article_object = Article.objects.create(title=title, content=content)
+        context["object"] = article_object
+        context["created"] = True
 
     return render(request, "articles/create.html", context=context)
