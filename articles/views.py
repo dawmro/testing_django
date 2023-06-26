@@ -45,10 +45,10 @@ def article_create_view(request):
     }
     # validate data
     if form.is_valid():
-        # get cleaned data from form
-        title = form.cleaned_data.get("title")
-        content = form.cleaned_data.get("content")
-        article_object = Article.objects.create(title=title, content=content)
+        # get cleaned/validated data from form and save it
+        article_object = form.save()
+        # initialize new empty form, to clear form after submit
+        form = ArticleForm()
         context["object"] = article_object
         context["created"] = True
 
