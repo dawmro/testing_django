@@ -47,6 +47,8 @@ def article_create_view(request):
     if request.method == "POST":
         # pass all data to instance of class
         form = ArticleForm(request.POST)
+        # bring back context of form to display errors
+        context["form"] = form
         # validate data
         if form.is_valid():
             # get cleaned data from form

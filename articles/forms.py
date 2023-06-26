@@ -7,7 +7,8 @@ class ArticleForm(forms.Form):
     def clean_title(self):
         cleaned_data = self.cleaned_data # dict
         title = cleaned_data.get("title")
-
+        if title.lower().strip() == "the office":
+            raise forms.ValidationError("Ths title is taken")
         return title
 
     # validation method
