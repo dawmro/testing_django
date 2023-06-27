@@ -7,17 +7,7 @@
     <div style="margin-top-30px;">
         <form method="POST">
             {% csrf_token %}
-            <div>
-                <label>Username: </label>
-                <input type="text" name="username" placeholder="username" />
-            </div>
-            <div>
-                <label>Password: </label>
-                <input type="password" name="password" placeholder="password" />
-            </div>
-            {% if error %}
-            <p style="color:red">{{ error }}</p>
-            {% endif %}
+            {{ form.as_p }}
             <button type="submit">Login</button>
         </form>
         <p>Need an account? </p><a href="/register/">Click to register</a></p>

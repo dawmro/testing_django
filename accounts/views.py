@@ -1,29 +1,23 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
 
 def login_view(request):
     if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-        
-        # authenticate user
-        user = authenticate(request, username=username, password=password)
-        # if authentication failed, show error, return to login page
-        if user is None:
-            context = {
-                "error" : "Invalid username or password."
-            }
-            return render(request, "accounts/login.html", context=context)
-
-        # log user in
-        login(request, user)
-        return redirect("/")
-
-    context = {}
-
+        form = AuthenticationForm(request, data=request.POST)
+        # validate form
+        if form.is_valid():
+            user = form.get_user()
+            # log user in
+            login(request, user)
+            return redirect("/")
+    else:
+        form = AuthenticationForm(request)
+    context = {
+        "form": form
+    }
     return render(request, "accounts/login.html", context=context)
 
 
