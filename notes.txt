@@ -1,0 +1,4 @@
+
+# job after deploy
+python manage.py migrate --noinput
+python manage.py createsuperuser --noinput --email hello@teamcfe.com
