@@ -37,7 +37,8 @@ def slugify_instance_title(instance, save=False, new_slug=None):
     else:  
         slug = slugify(instance.title)
     # filter by slug, exclude current instance
-    qs = Article.objects.filter(slug=slug)
+    Klass = instance.__class__ # make it run on any django model
+    qs = Klass.objects.filter(slug=slug).exclude(id=instance.id)
     # if slug exists in other instances
     if qs.exists():
         # create new slug using current one
