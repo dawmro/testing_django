@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
+from django.db.models.signals import pre_save, post_save
 
 # Create your models here.
 
@@ -22,8 +23,25 @@ class Article(models.Model):
     # override save method
     def save(self, *args, **kwargs):
         # slugify title if empty
-        if self.slug is None:
-            self.slug = slugify(self.title)
+        #if self.slug is None:
+        #    self.slug = slugify(self.title)
         # call origina save method
         super().save(*args, **kwargs)
 
+
+def article_pre_save(sender, instance, *args, **kwargs):
+    print(f"pre_save: {args}, {kwargs}")
+    if instance.slug is None:
+            instance.slug = slugify(instance.title)
+
+# connect pre_save signal to article_pre_save receiver function every time Article instance is saved
+pre_save.connect(article_pre_save, sender=Article)
+
+def article_post_save(sender, instance, created, *args, **kwargs):
+    print(f"post_save: {args}, {kwargs}")
+    if created:
+        instance.slug = slugify(instance.title)
+        instance.save()
+
+# connect post_save signal to article_pre_save receiver function every time after Article instance is saved
+post_save.connect(article_post_save, sender=Article)
