@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.utils.text import slugify
 
 # Create your models here.
 
@@ -17,4 +18,12 @@ class Article(models.Model):
     updated = models.DateTimeField(auto_now=True)
     # when article has been published
     publish = models.DateField(auto_now_add=False, auto_now=False, default=timezone.now)
+
+    # override save method
+    def save(self, *args, **kwargs):
+        # slugify title if empty
+        if self.slug is None:
+            self.slug = slugify(self.title)
+        # call origina save method
+        super().save(*args, **kwargs)
 
