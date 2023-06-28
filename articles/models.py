@@ -29,19 +29,32 @@ class Article(models.Model):
         super().save(*args, **kwargs)
 
 
+def slugify_instance_title(instance, save=False):
+    slug = slugify(instance.title)
+    # filter by slug, exclude current instance
+    qs = Article.objects.filter(slug=slug)
+    # if slug exists in other instances
+    if qs.exists():
+        # create new slug using current one
+        slug = f"{slug}-{qs.count()+1}"
+    instance.slug = slug
+    if save:
+        instance.save()
+    return instance
+
 def article_pre_save(sender, instance, *args, **kwargs):
     print(f"pre_save: {args}, {kwargs}")
     if instance.slug is None:
-            instance.slug = slugify(instance.title)
+            slugify_instance_title(instance, save=False)
 
 # connect pre_save signal to article_pre_save receiver function every time Article instance is saved
 pre_save.connect(article_pre_save, sender=Article)
 
+
 def article_post_save(sender, instance, created, *args, **kwargs):
     print(f"post_save: {args}, {kwargs}")
     if created:
-        instance.slug = slugify(instance.title)
-        instance.save()
+        slugify_instance_title(instance, save=True)
 
 # connect post_save signal to article_pre_save receiver function every time after Article instance is saved
 post_save.connect(article_post_save, sender=Article)
