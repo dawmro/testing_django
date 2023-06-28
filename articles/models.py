@@ -1,3 +1,4 @@
+import random
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
@@ -10,7 +11,7 @@ class Article(models.Model):
     # https://docs.djangoproject.com/en/4.2/ref/models/fields/#django.db.models
     # title of an article
     title = models.CharField(max_length=100)
-    slug = models.SlugField(blank=True, null=True)
+    slug = models.SlugField(unique=True, blank=True, null=True)
     # content of article
     content = models.TextField()
     # when created
@@ -29,14 +30,20 @@ class Article(models.Model):
         super().save(*args, **kwargs)
 
 
-def slugify_instance_title(instance, save=False):
-    slug = slugify(instance.title)
+def slugify_instance_title(instance, save=False, new_slug=None):
+    # get slug from parameters or slugify current title
+    if new_slug is not None:
+        slug = new_slug
+    else:  
+        slug = slugify(instance.title)
     # filter by slug, exclude current instance
     qs = Article.objects.filter(slug=slug)
     # if slug exists in other instances
     if qs.exists():
         # create new slug using current one
-        slug = f"{slug}-{qs.count()+1}"
+        rand_int = random.randint(100_000, 900_000)
+        slug = f"{slug}-{rand_int}"
+        return slugify_instance_title(instance, save=save, new_slug=slug)
     instance.slug = slug
     if save:
         instance.save()
@@ -53,6 +60,7 @@ pre_save.connect(article_pre_save, sender=Article)
 
 def article_post_save(sender, instance, created, *args, **kwargs):
     print(f"post_save: {args}, {kwargs}")
+    # if slug has never been generated, create it
     if created:
         slugify_instance_title(instance, save=True)
 
