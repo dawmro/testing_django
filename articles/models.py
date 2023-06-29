@@ -21,6 +21,10 @@ class Article(models.Model):
     # when article has been published
     publish = models.DateField(auto_now_add=False, auto_now=False, default=timezone.now)
 
+    #
+    def get_absolute_url(self):
+        return f"/articles/{self.slug}"
+
     # override save method
     def save(self, *args, **kwargs):
         # slugify title if empty
