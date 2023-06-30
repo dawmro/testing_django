@@ -4,6 +4,7 @@
 <h1>{{ title }} (id: {{ id }})!</h1>
 <p>{{ content }}!</p>
 
+<a href="{% url 'article-create' %}">Create Article</a>
 <h2>More articles:</h2>
 <ul>
     {% for article in articles_list %}
