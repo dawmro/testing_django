@@ -8,12 +8,20 @@ from .utils import slugify_instance_title
 
 # Create your models here.
 
-class ArticleManager(models.Manager):
-    def search(self, query=None): 
+class ArticleQuerySet(models.QuerySet):
+    def search(self, query=None):
         if query is None or query == "":
-            return self.get_queryset.none() # empty list []
+            return self.none() # empty list []
         lookups = Q(title__icontains=query) | Q(content__icontains=query)
-        return self.get_queryset().filter(lookups)
+        return self.filter(lookups)
+
+class ArticleManager(models.Manager):
+    # override get_queryset method
+    def get_queryset(self):
+        return ArticleQuerySet(self.model, using=self._db)
+
+    def search(self, query=None): 
+        return self.get_queryset().search(query=query)
 
 # create class Article that inherits from django models.Model
 class Article(models.Model):
