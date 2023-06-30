@@ -1,8 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% if object %}
-    <h1>{{ object.title }} (id: {{ object.id }})!</h1>
-    <p>{{ object.content }}!</p>
-{% endif %}
+
+<ol>
+{% for object in object_list %}
+    {% if object.title %}
+        <li>
+            <a href="{{ object.get_absoulte_url }}">{{ object.title }} (id: {{ object.id }})!</a>
+        </li>
+    {% endif %}
+{% endfor %}
+</ol>
+
 {% endblock content %}
