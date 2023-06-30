@@ -78,3 +78,16 @@ class ArticleTestCase(TestCase):
         unique_slug_list = list(set(slug_list))
         # compare lengths to find out if there were any duplicates
         self.assertEqual(len(slug_list), len(unique_slug_list))
+
+
+    def test_article_search_manager(self):
+        qs = Article.objects.search("hello world")
+        self.assertEqual(qs.count(), self.number_of_articles)
+        qs = Article.objects.search("hello")
+        self.assertEqual(qs.count(), self.number_of_articles)
+        qs = Article.objects.search("world")
+        self.assertEqual(qs.count(), self.number_of_articles)
+        qs = Article.objects.search("content of article")
+        self.assertEqual(qs.count(), self.number_of_articles)
+        qs = Article.objects.search("of")
+        self.assertEqual(qs.count(), self.number_of_articles)
