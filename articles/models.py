@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from django.utils import timezone
 from django.db.models.signals import pre_save, post_save
 from django.urls import reverse
@@ -7,7 +8,14 @@ from .utils import slugify_instance_title
 
 # Create your models here.
 
-# create class Articles that inherits from django models.Model
+class ArticleManager(models.Manager):
+    def search(self, query=None): 
+        if query is None or query == "":
+            return self.get_queryset.none() # empty list []
+        lookups = Q(title__icontains=query) | Q(content__icontains=query)
+        return self.get_queryset().filter(lookups)
+
+# create class Article that inherits from django models.Model
 class Article(models.Model):
     # https://docs.djangoproject.com/en/4.2/ref/models/fields/#django.db.models
     # title of an article
@@ -21,6 +29,8 @@ class Article(models.Model):
     updated = models.DateTimeField(auto_now=True)
     # when article has been published
     publish = models.DateField(auto_now_add=False, auto_now=False, default=timezone.now)
+
+    objects = ArticleManager()
 
     #
     def get_absolute_url(self):
