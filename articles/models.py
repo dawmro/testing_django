@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
@@ -7,6 +8,9 @@ from django.urls import reverse
 from .utils import slugify_instance_title
 
 # Create your models here.
+
+# declare user model
+User = settings.AUTH_USER_MODEL
 
 class ArticleQuerySet(models.QuerySet):
     def search(self, query=None):
@@ -26,6 +30,7 @@ class ArticleManager(models.Manager):
 # create class Article that inherits from django models.Model
 class Article(models.Model):
     # https://docs.djangoproject.com/en/4.2/ref/models/fields/#django.db.models
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
     # title of an article
     title = models.CharField(max_length=100)
     slug = models.SlugField(unique=True, blank=True, null=True)
