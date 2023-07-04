@@ -17,3 +17,28 @@ class UserTestCase(TestCase):
         self.assertTrue(checked)
 
 
+class RecipeTestCase(TestCase):
+    def setUp(self):
+        self.user_a = User.objects.create_user('adam', password='pass1234')
+        self.recipe_a = Recipe.objects.create(
+            name = 'Grilled Chicken',
+            user = self.user_a
+        )
+        self.recipe_b = Recipe.objects.create(
+            name = 'Grilled Chicken Tacos',
+            user = self.user_a
+        )
+
+    def test_user_count(self):
+        qs = User.objects.all()
+        self.assertEqual(qs.count(), 1)
+
+    def test_user_recipe_reverse_count(self):
+        user = self.user_a
+        qs = user.recipe_set.all()
+        self.assertEqual(qs.count(), 2)
+
+    def test_user_recipe_forward_count(self):
+        user = self.user_a
+        qs = Recipe.objects.filter(user=user)
+        self.assertEqual(qs.count(), 2)
