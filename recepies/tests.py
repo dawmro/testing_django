@@ -28,6 +28,25 @@ class RecipeTestCase(TestCase):
             name = 'Grilled Chicken Tacos',
             user = self.user_a
         )
+        self.recipe_ingredient_a1 = RecipeIngridient.objects.create(
+            recipe=self.recipe_a,
+            name="chicken",
+            quantity="1/2",
+            unit="pound"
+        )
+        self.recipe_ingredient_a2 = RecipeIngridient.objects.create(
+            recipe=self.recipe_a,
+            name="egg",
+            quantity="1",
+            unit="oz"
+        )
+        self.recipe_ingredient_a3 = RecipeIngridient.objects.create(
+            recipe=self.recipe_a,
+            name="bread",
+            quantity="1/2",
+            unit="kg"
+        )
+
 
     def test_user_count(self):
         qs = User.objects.all()
@@ -42,3 +61,8 @@ class RecipeTestCase(TestCase):
         user = self.user_a
         qs = Recipe.objects.filter(user=user)
         self.assertEqual(qs.count(), 2)
+
+    def test_recipe_ingredient_reverse_count(self):
+        recipe = self.recipe_a
+        qs = RecipeIngridient.objects.filter(recipe=recipe)
+        self.assertEqual(qs.count(), 3)
