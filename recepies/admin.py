@@ -8,6 +8,7 @@ User = get_user_model()
 
 class RecipeIngridientInline(admin.StackedInline):
     model = RecipeIngridient
+    readonly_fields = ['quantity_as_float']
     #fields = ['name', 'quantity', 'unit', 'directions']
     extra = 0
 
