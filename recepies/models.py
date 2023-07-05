@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from .validators import validate_unit_of_measure
 
 # Create your models here.
 
@@ -28,7 +29,7 @@ class RecipeIngridient(models.Model):
     name = models.CharField(max_length=220) 
     description = models.TextField(blank=True, null=True)
     # users can put in different things, make it char just to be safe
-    quantity = models.CharField(max_length=50)
+    quantity = models.CharField(max_length=50, validators=[validate_unit_of_measure])
     # pounds, lbs, oz, gram
     unit = models.CharField(max_length=50)
     directions = models.TextField(blank=True, null=True)
