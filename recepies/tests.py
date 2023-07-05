@@ -44,7 +44,7 @@ class RecipeTestCase(TestCase):
         self.recipe_ingredient_a3 = RecipeIngridient.objects.create(
             recipe=self.recipe_a,
             name="bread",
-            quantity="1/2",
+            quantity="rehdhtt",
             unit="kg"
         )
         self.recipe_ingredient_b1 = RecipeIngridient.objects.create(
@@ -121,3 +121,7 @@ class RecipeTestCase(TestCase):
                 )
                 # verify if all fields are valid
                 ingridient.full_clean()
+
+    def test_quantity_as_float(self):
+        self.assertIsNotNone(self.recipe_ingredient_a2.quantity_as_float)
+        self.assertIsNone(self.recipe_ingredient_a3.quantity_as_float)
