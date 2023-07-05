@@ -46,6 +46,18 @@ class RecipeTestCase(TestCase):
             quantity="1/2",
             unit="kg"
         )
+        self.recipe_ingredient_b1 = RecipeIngridient.objects.create(
+            recipe=self.recipe_b,
+            name="chicken",
+            quantity="1/2",
+            unit="pound"
+        )
+        self.recipe_ingredient_b2 = RecipeIngridient.objects.create(
+            recipe=self.recipe_b,
+            name="taco",
+            quantity="5",
+            unit="piece"
+        )
 
 
     def test_user_count(self):
@@ -70,11 +82,17 @@ class RecipeTestCase(TestCase):
     def test_user_two_level_relationship(self):
         user = self.user_a
         qs = RecipeIngridient.objects.filter(recipe__user=user)
-        self.assertEqual(qs.count(), 3)
+        self.assertEqual(qs.count(), 5)
 
     def test_user_two_level_reverse_relationship(self):
         user = self.user_a
         recipe_ingredient_ids = list(user.recipe_set.all().values_list("recipeingridient__id", flat=True))
         # [1, 2, 3, None]
         qs = RecipeIngridient.objects.filter(id__in=recipe_ingredient_ids)
-        self.assertEqual(qs.count(), 3)
+        self.assertEqual(qs.count(), 5)
+
+    def test_user_two_level_reverse_relationship_via_recipe(self):
+        user = self.user_a
+        ids = user.recipe_set.all().values_list("id", flat=True)
+        qs = RecipeIngridient.objects.filter(recipe_id__in=ids)
+        self.assertEqual(qs.count(), 5)
