@@ -29,9 +29,9 @@ class RecipeIngridient(models.Model):
     name = models.CharField(max_length=220) 
     description = models.TextField(blank=True, null=True)
     # users can put in different things, make it char just to be safe
-    quantity = models.CharField(max_length=50, validators=[validate_unit_of_measure])
+    quantity = models.CharField(max_length=50)
     # pounds, lbs, oz, gram
-    unit = models.CharField(max_length=50)
+    unit = models.CharField(max_length=50, validators=[validate_unit_of_measure])
     directions = models.TextField(blank=True, null=True)
     timestamp = models.DateField(auto_now_add=True)
     updated = models.DateField(auto_now=True)
