@@ -3,7 +3,7 @@ from django import forms
 from .models import Recipe
 
 
-class RecipeForm(models.ModelForm):
+class RecipeForm(forms.ModelForm):
     class Meta:
-        models = Recipe
+        model = Recipe
         fields = ["name", "description", "directions"]
