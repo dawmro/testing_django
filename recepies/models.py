@@ -23,6 +23,9 @@ class Recipe(models.Model):
     # show or hide recepie
     active = models.BooleanField(default=True)
 
+    def get_absolute_url(self):
+        return "/pantry/recipes"
+
 
 # prepration steps for single ingridient from a given recipe
 class RecipeIngridient(models.Model):
@@ -39,6 +42,9 @@ class RecipeIngridient(models.Model):
     timestamp = models.DateField(auto_now_add=True)
     updated = models.DateField(auto_now=True)
     active = models.BooleanField(default=True)
+
+    def get_absolute_url(self):
+        return self.recipe.get_absolute_url
 
     def convert_to_system(self, system="mks"):
         if self.quantity_as_float is None:
