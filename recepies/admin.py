@@ -1,13 +1,13 @@
 from django.contrib.auth import get_user_model
 from django.contrib import admin
-from .models import RecipeIngridient, Recipe
+from .models import RecipeIngredient, Recipe
 
 # Register your models here.
 
 User = get_user_model()  
 
 class RecipeIngridientInline(admin.StackedInline):
-    model = RecipeIngridient
+    model = RecipeIngredient
     readonly_fields = ['quantity_as_float', 'as_mks', 'as_imperial']
     #fields = ['name', 'quantity', 'unit', 'directions']
     extra = 0

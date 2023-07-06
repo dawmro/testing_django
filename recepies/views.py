@@ -9,7 +9,7 @@ from .forms import RecipeForm
 
 @login_required
 def recipe_list_view(request, id=None):
-    qs = Recipe.objects.filter(user=requst.user)
+    qs = Recipe.objects.filter(user=request.user)
     context = {
         "object_list": qs
     }

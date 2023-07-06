@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>My Recipes!</h1>
+
+<a href="{% url 'recipes:create' %}">Create Recipe</a>
+<h2>More recipes:</h2>
+<ul>
+    {% for recipe in object_list %}
+        {% if recipe.name %}
+            <li><a href='{{ recipe.get_absolute_url }}'>{{ recipe.name }}</a></li>
+        {% endif %}
+    {% endfor %}
+</ul>
+{% endblock content %}

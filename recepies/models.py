@@ -29,7 +29,7 @@ class Recipe(models.Model):
 
 
 # prepration steps for single ingridient from a given recipe
-class RecipeIngridient(models.Model):
+class RecipeIngredient(models.Model):
     # attach to parent class
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     name = models.CharField(max_length=220) 
