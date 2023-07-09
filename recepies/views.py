@@ -56,6 +56,8 @@ def recipe_update_view(request, id=None):
         "formset": formset,
         "object": obj
     }
+    if request.method == "POST":
+        print(request.POST)
     if all([form.is_valid(), formset.is_valid()]):
         parent = form.save(commit=False)
         parent.save()
