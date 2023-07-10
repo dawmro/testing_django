@@ -1,0 +1,95 @@
+[
+{
+    "model": "recepies.recipe",
+    "pk": 1,
+    "fields": {
+        "user": 1,
+        "name": "HoneyMilk",
+        "description": "Milk with honey.",
+        "directions": "1. Warm up milk\n2. Add honey\n3. Drink",
+        "timestamp": "2023-07-03",
+        "updated": "2023-07-10",
+        "active": true
+    }
+},
+{
+    "model": "recepies.recipeingredient",
+    "pk": 1,
+    "fields": {
+        "recipe": 1,
+        "name": "Milk",
+        "description": "Milk from cow",
+        "quantity": "4",
+        "quantity_as_float": 4.0,
+        "unit": "oz",
+        "directions": "Pour milk into a glass.",
+        "timestamp": "2023-07-03",
+        "updated": "2023-07-10",
+        "active": true
+    }
+},
+{
+    "model": "recepies.recipeingredient",
+    "pk": 2,
+    "fields": {
+        "recipe": 1,
+        "name": "Honey",
+        "description": "Honey from bees",
+        "quantity": "1",
+        "quantity_as_float": 1.0,
+        "unit": "oz",
+        "directions": "Scoop 1 tablespoon of honey.",
+        "timestamp": "2023-07-03",
+        "updated": "2023-07-10",
+        "active": true
+    }
+},
+{
+    "model": "recepies.recipeingredient",
+    "pk": 3,
+    "fields": {
+        "recipe": 1,
+        "name": "sugar",
+        "description": "",
+        "quantity": "3 1/8",
+        "quantity_as_float": 3.125,
+        "unit": "pound",
+        "directions": "",
+        "timestamp": "2023-07-05",
+        "updated": "2023-07-10",
+        "active": true
+    }
+},
+{
+    "model": "recepies.recipeingredient",
+    "pk": 4,
+    "fields": {
+        "recipe": 1,
+        "name": "choco",
+        "description": null,
+        "quantity": "1",
+        "quantity_as_float": 1.0,
+        "unit": "oz",
+        "directions": null,
+        "timestamp": "2023-07-07",
+        "updated": "2023-07-10",
+        "active": true
+    }
+},
+{
+    "model": "recepies.recipeingredient",
+    "pk": 5,
+    "fields": {
+        "recipe": 1,
+        "name": "pasta",
+        "description": null,
+        "quantity": "2 2/3",
+        "quantity_as_float": 2.6666666666666665,
+        "unit": "kg",
+        "directions": null,
+        "timestamp": "2023-07-09",
+        "updated": "2023-07-10",
+        "active": true
+    }
+}
+]
