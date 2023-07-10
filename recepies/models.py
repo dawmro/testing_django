@@ -27,6 +27,9 @@ class Recipe(models.Model):
     def get_absolute_url(self):
         return reverse("recipes:detail", kwargs={"id": self.id})
 
+    def get_hx_url(self):
+        return reverse("recipes:hx-detail", kwargs={"id": self.id})
+
     def get_edit_url(self):
         return reverse("recipes:edit", kwargs={"id": self.id})
 
