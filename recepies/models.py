@@ -54,7 +54,7 @@ class RecipeIngredient(models.Model):
     active = models.BooleanField(default=True)
 
     def get_absolute_url(self):
-        return self.recipe.get_absolute_url
+        return self.recipe.get_absolute_url()
 
     def get_hx_edit_url(self):
         kwargs = {
