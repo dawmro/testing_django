@@ -45,6 +45,10 @@ class Article(models.Model):
 
     objects = ArticleManager()
 
+    @property
+    def name(self):
+        return self.title
+
     #
     def get_absolute_url(self):
         #return f"/articles/{self.slug}"

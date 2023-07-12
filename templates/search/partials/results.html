@@ -7,3 +7,7 @@ Searched for: {{ request.GET.q }}, under: {{ request.GET.type|title }}
     <li>No results found</li>
 
 {% endfor %}
+
+{% if request.htmx %}
+    <a href="/search/?q={{ request.GET.q }}&type={{ request.GET.type }}">View all</a>
+{% endif %}
