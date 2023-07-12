@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django_htmx',
     'articles',
     'recepies',
+    'search',
 ]
 
 MIDDLEWARE = [
