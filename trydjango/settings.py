@@ -42,7 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # third party
     'django_htmx',
+    'storages',
+    # internal
     'articles',
     'recepies',
     'search',
@@ -165,6 +168,10 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_ROOT = BASE_DIR / "staticfiles-cdn" # in production we want content delivery network
+
+from .cdn.conf import * # noqa
+
+# https://first-project-spaces.fra1.digitaloceanspaces.com
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
