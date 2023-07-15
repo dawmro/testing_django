@@ -1,3 +1,5 @@
+import pathlib
+import uuid
 from django.db import models
 from django.db.models import Q
 from django.conf import settings
@@ -65,6 +67,18 @@ class Recipe(models.Model):
 
     def get_ingredients_children(self):
         return self.recipeingredient_set.all()
+
+
+def recipe_ingredient_image_upload_handler(instance, filename):
+    fpath = pathlib.Path(filename)
+    new_fname = str(uuid.uuid1()) # uuid + timestamp
+    return f"recipes/{new_fname}{fpath.suffix}"
+
+class RecipeIngredientImage(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    # image
+    image = models.ImageField(upload_to=recipe_ingredient_image_upload_handler)
+    # extracted_text
 
 
 # prepration steps for single ingridient from a given recipe

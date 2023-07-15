@@ -169,6 +169,8 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR / "staticfiles-cdn" # in production we want content delivery network
 
+MEDIA_ROOT = BASE_DIR / "staticfiles-cdn" / "uploads"
+
 from .cdn.conf import * # noqa
 
 # https://first-project-spaces.fra1.digitaloceanspaces.com
@@ -177,3 +179,4 @@ from .cdn.conf import * # noqa
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
