@@ -76,9 +76,9 @@ def recipe_ingredient_image_upload_handler(instance, filename):
 
 class RecipeIngredientImage(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    # image
     image = models.ImageField(upload_to=recipe_ingredient_image_upload_handler)
-    # extracted_text
+    extracted = models.JSONField(blank=True, null=True)
+
 
 
 # prepration steps for single ingridient from a given recipe
