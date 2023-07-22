@@ -1,0 +1,103 @@
+alerts:
+- rule: DEPLOYMENT_FAILED
+- rule: DOMAIN_FAILED
+databases:
+- engine: PG
+  name: db
+  num_nodes: 1
+  size: db-s-dev-database
+  version: "12"
+envs:
+- key: AWS_ACCESS_KEY_ID
+  scope: RUN_AND_BUILD_TIME
+  type: SECRET
+  value: EV[1:MlH9tiT7IVIPIOMnVWAJOagAB/5uBGcx:DuEUzCaudFCef3aETRGPc0tc0iRA/Q==]
+- key: AWS_SECRET_ACCESS_KEY
+  scope: RUN_AND_BUILD_TIME
+  type: SECRET
+  value: EV[1:YVYBU8Qto7bHPlIOZVWqdYjONX3Gag7N:2HPwevq26Z3wZbOl9qznxWiEjP65zw==]
+- key: AWS_STORAGE_BUCKET_NAME
+  scope: RUN_AND_BUILD_TIME
+  value: first-project-spaces
+- key: DEBUG
+  scope: RUN_AND_BUILD_TIME
+  value: "0"
+- key: DISABLE_COLLECTSTATIC
+  scope: RUN_AND_BUILD_TIME
+  value: "1"
+- key: DJANGO_ALLOWED_HOST
+  scope: RUN_AND_BUILD_TIME
+  value: .ondigitalocean.app
+- key: DJANGO_SECRET_KEY
+  scope: RUN_AND_BUILD_TIME
+  type: SECRET
+  value: EV[1:DMOohVN8AjChBNJbatgs+51XAngpZwmK:8jorAHn2oG8TH6Mc2WsvkEBsP5575A==]
+- key: DJANGO_SUPERUSER_EMAIL
+  scope: RUN_AND_BUILD_TIME
+  value: dawidmrotek@protonmail.ch
+- key: DJANGO_SUPERUSER_USERNAME
+  scope: RUN_AND_BUILD_TIME
+  value: dawmro
+- key: DJANGO_SUPERUSER_PASSWORD
+  scope: RUN_AND_BUILD_TIME
+  type: SECRET
+  value: EV[1:qhZYoQ+l95/OQGXAvXFJWoHmuj4S8F0E:oKYS8piFL6pdQylbl+bhiJF9Gklw6g==]
+- key: DATABASE_URL
+  scope: RUN_AND_BUILD_TIME
+  value: ${db.DATABASE_URL}
+- key: POSTGRES_DB
+  scope: RUN_AND_BUILD_TIME
+  value: ${db.DATABASE}
+- key: POSTGRES_HOST
+  scope: RUN_AND_BUILD_TIME
+  value: ${db.HOSTNAME}
+- key: POSTGRES_USER
+  scope: RUN_AND_BUILD_TIME
+  value: ${db.USERNAME}
+- key: POSTGRES_PASSWORD
+  scope: RUN_AND_BUILD_TIME
+  value: ${db.PASSWORD}
+- key: POSTGRES_PORT
+  scope: RUN_AND_BUILD_TIME
+  value: ${db.PORT}
+ingress:
+  rules:
+  - component:
+      name: testing-django
+    match:
+      path:
+        prefix: /
+jobs:
+- environment_slug: python
+  github:
+    branch: main
+    deploy_on_push: true
+    repo: dawmro/testing_django
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  kind: PRE_DEPLOY
+  name: testing-django-migrate-job
+  run_command: python manage.py migrate --noinput
+  source_dir: /
+name: try-django-via-cli
+region: fra
+services:
+- environment_slug: python
+  github:
+    branch: main
+    deploy_on_push: true
+    repo: dawmro/testing_django
+  http_port: 8080
+  instance_count: 1
+  instance_size_slug: basic-xs
+  name: testing-django
+  run_command: |
+    gunicorn --worker-tmp-dir /dev/shm trydjango.wsgi
+  source_dir: /
+
+
+# echo "$(doctl apps create --spec .do/app.yaml --format "ID" --no-header)" > app-id.txt
+
+# doctl apps update "$(cat app-id.txt)" --spec .do/app.yaml
+
+# doctl apps delete "$(cat app-id.txt)"
