@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-from .models import RecipeIngridient, Recipe
+from .models import RecipeIngredient, Recipe
 
 # Create your tests here.
 
@@ -29,31 +29,31 @@ class RecipeTestCase(TestCase):
             name = 'Grilled Chicken Tacos',
             user = self.user_a
         )
-        self.recipe_ingredient_a1 = RecipeIngridient.objects.create(
+        self.recipe_ingredient_a1 = RecipeIngredient.objects.create(
             recipe=self.recipe_a,
             name="chicken",
             quantity="1/2",
             unit="pound"
         )
-        self.recipe_ingredient_a2 = RecipeIngridient.objects.create(
+        self.recipe_ingredient_a2 = RecipeIngredient.objects.create(
             recipe=self.recipe_a,
             name="egg",
             quantity="1",
             unit="oz"
         )
-        self.recipe_ingredient_a3 = RecipeIngridient.objects.create(
+        self.recipe_ingredient_a3 = RecipeIngredient.objects.create(
             recipe=self.recipe_a,
             name="bread",
             quantity="rehdhtt",
             unit="kg"
         )
-        self.recipe_ingredient_b1 = RecipeIngridient.objects.create(
+        self.recipe_ingredient_b1 = RecipeIngredient.objects.create(
             recipe=self.recipe_b,
             name="chicken",
             quantity="1/2",
             unit="pound"
         )
-        self.recipe_ingredient_b2 = RecipeIngridient.objects.create(
+        self.recipe_ingredient_b2 = RecipeIngredient.objects.create(
             recipe=self.recipe_b,
             name="taco",
             quantity="5",
@@ -77,30 +77,30 @@ class RecipeTestCase(TestCase):
 
     def test_recipe_ingredient_reverse_count(self):
         recipe = self.recipe_a
-        qs = RecipeIngridient.objects.filter(recipe=recipe)
+        qs = RecipeIngredient.objects.filter(recipe=recipe)
         self.assertEqual(qs.count(), 3)
 
     def test_user_two_level_relationship(self):
         user = self.user_a
-        qs = RecipeIngridient.objects.filter(recipe__user=user)
+        qs = RecipeIngredient.objects.filter(recipe__user=user)
         self.assertEqual(qs.count(), 5)
 
     def test_user_two_level_reverse_relationship(self):
         user = self.user_a
-        recipe_ingredient_ids = list(user.recipe_set.all().values_list("recipeingridient__id", flat=True))
+        recipe_ingredient_ids = list(user.recipe_set.all().values_list("recipeingredient__id", flat=True))
         # [1, 2, 3, None]
-        qs = RecipeIngridient.objects.filter(id__in=recipe_ingredient_ids)
+        qs = RecipeIngredient.objects.filter(id__in=recipe_ingredient_ids)
         self.assertEqual(qs.count(), 5)
 
     def test_user_two_level_reverse_relationship_via_recipe(self):
         user = self.user_a
         ids = user.recipe_set.all().values_list("id", flat=True)
-        qs = RecipeIngridient.objects.filter(recipe_id__in=ids)
+        qs = RecipeIngredient.objects.filter(recipe_id__in=ids)
         self.assertEqual(qs.count(), 5)
 
     def test_unit_measure_validation_pass(self):
         valid_unit = 'ounce'
-        ingridient = RecipeIngridient(
+        ingridient = RecipeIngredient(
             name="new",
             quantity=10,
             recipe=self.recipe_a,
@@ -113,7 +113,7 @@ class RecipeTestCase(TestCase):
         invalid_unit = ['yellow', 'chungus', 'bread', 'arefsfsdfg']
         for inv_unit in invalid_unit:
             with self.assertRaises(ValidationError):
-                ingridient = RecipeIngridient(
+                ingridient = RecipeIngredient(
                     name="new",
                     quantity=10,
                     recipe=self.recipe_a,
