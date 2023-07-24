@@ -1,4 +1,4 @@
-name: Django CI
+name: CI/CD Django, Postgres, DigitalOcean
 
 on:
   push:
@@ -6,15 +6,28 @@ on:
   pull_request:
     branches: [ "main" ]
 
+workflow_dispatch:
+
 jobs:
   build:
 
     runs-on: ubuntu-latest
+    servicess:
+      postgres_main:
+        image: postgres:12
+        env:
+          POSTGRES_USER: default
+          POSTGRES_PASSWORD: default
+          POSTGRES_DB: djtesting
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.7, 3.8, 3.9]
-
+        python-version: [3.8, 3.9]
+    
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
@@ -26,5 +39,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Run Tests
+      env:
+        DEBUG: "0"
+        DJANGO_SECREY_KEY: CI_CD_DJANGO_TEST_KEY
+        POSTGRES_USER: default
+        POSTGRES_PASSWORD: default
+        POSTGRES_DB: djtesting
+        POSTGRES_PORT: 5432
       run: |
         python manage.py test
