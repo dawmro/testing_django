@@ -84,7 +84,7 @@ region: fra
 services:
 - environment_slug: python
   github:
-    branch: main
+    branch: production
     deploy_on_push: true
     repo: dawmro/testing_django
   http_port: 8080
