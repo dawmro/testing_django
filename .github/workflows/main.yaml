@@ -40,7 +40,7 @@ jobs:
     - name: Run Tests
       env:
         DEBUG: "0"
-        DJANGO_SECREY_KEY: CI_CD_DJANGO_TEST_KEY
+        DJANGO_SECRET_KEY: CI_CD_DJANGO_TEST_KEY
         POSTGRES_USER: default
         POSTGRES_PASSWORD: default
         POSTGRES_DB: djtesting
