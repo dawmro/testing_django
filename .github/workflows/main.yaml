@@ -61,4 +61,4 @@ jobs:
         token: ${{ secrets.DO_ACCESS_TOKEN }}
     - name: Run doctl command
       run: |
-        doctl apps update ${{ secrets.DO_APP_ID }} --spec .do/app.yaml
+        doctl apps update ${{ variables.DO_APP_ID }} --spec .do/app.yaml
