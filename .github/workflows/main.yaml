@@ -47,18 +47,18 @@ jobs:
         POSTGRES_PORT: 5432
       run: |
         python manage.py test
-    - name: Push Main branch into Production
-      uses: codingforentrepreneurs/action-branch-to-branch@main
-      with:
-        dest_branch: production
-        source_branch: main
-        commit_message: "[RELEASE] production version"
-      env:
-        GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-    - name: Install doctl
-      uses: digitalocean/action-doctl@v2
-      with:
-        token: ${{ secrets.DO_ACCESS_TOKEN }}
-    - name: Run doctl command
-      run: |
-        doctl apps update ${{ env.DO_APP_ID }} --spec .do/app.yaml
+#    - name: Push Main branch into Production
+#      uses: codingforentrepreneurs/action-branch-to-branch@main
+#      with:
+#        dest_branch: production
+#        source_branch: main
+#        commit_message: "[RELEASE] production version"
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+#    - name: Install doctl
+#      uses: digitalocean/action-doctl@v2
+#      with:
+#        token: ${{ secrets.DO_ACCESS_TOKEN }}
+#    - name: Run doctl command
+#      run: |
+#        doctl apps update ${{ secrets.DO_APP_ID }} --spec .do/app.yaml
