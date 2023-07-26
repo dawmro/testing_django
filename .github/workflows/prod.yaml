@@ -1,4 +1,4 @@
-name: CI/CD Django, Postgres, DigitalOcean
+name: Production Django, Postgres, Tests, DigitalOcean
 
 on:
   push:
