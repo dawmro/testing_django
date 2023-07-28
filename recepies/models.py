@@ -88,10 +88,10 @@ class RecipeIngredient(models.Model):
     name = models.CharField(max_length=220) 
     description = models.TextField(blank=True, null=True)
     # users can put in different things, make it char just to be safe
-    quantity = models.CharField(max_length=50)
+    quantity = models.CharField(max_length=50, blank=True, null=True)
     quantity_as_float = models.FloatField(blank=True, null=True)
     # pounds, lbs, oz, gram
-    unit = models.CharField(max_length=50, validators=[validate_unit_of_measure])
+    unit = models.CharField(max_length=50, validators=[validate_unit_of_measure], blank=True, null=True)
     directions = models.TextField(blank=True, null=True)
     timestamp = models.DateField(auto_now_add=True)
     updated = models.DateField(auto_now=True)
