@@ -6,6 +6,11 @@ from django.shortcuts import redirect, render, get_object_or_404
 from .forms import RecipeForm, RecipeIngredientForm, RecipeIngredientImageForm
 from .models import Recipe, RecipeIngredient
 from .services import extract_text_via_ocr_service
+from .utils import (
+    number_str_to_float,
+    parse_paragraph_to_recipe_line,
+    convert_to_qty_units
+)
 # Create your views here.
 
 # CRUD 
@@ -197,10 +202,18 @@ def recipe_ingredient_image_upload_view(request, parent_id=None):
         obj = form.save(commit=False)
         obj.recipe = parent_obj
         obj.save()
-        result = extract_text_via_ocr_service(obj.image)
-        obj.extracted = result
+        extracted = extract_text_via_ocr_service(obj.image)
+        obj.extracted = extracted
         obj.save()
-        print(obj.extracted)
+        og = extracted['original']
+        results = parse_paragraph_to_recipe_line(og)
+        dataset = convert_to_qty_units(results=results)
+        new_objs = []
+        for data in dataset:
+            data['recipe_id'] = parent_id
+            print(data)
+            new_objs.append(RecipeIngredient(**data))
+        RecipeIngredient.objects.bulk_create(new_objs)
     context = {
         "form": form
     }

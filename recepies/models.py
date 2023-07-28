@@ -118,7 +118,7 @@ class RecipeIngredient(models.Model):
         if self.quantity_as_float is None:
             return None
         ureg = pint.UnitRegistry(system=system)
-        measurement = self.quantity_as_float * ureg[self.unit]
+        measurement = self.quantity_as_float * ureg[self.unit.lower()]
         return measurement #.to_base_units()
 
     def as_mks(self):
