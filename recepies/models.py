@@ -68,6 +68,9 @@ class Recipe(models.Model):
     def get_ingredients_children(self):
         return self.recipeingredient_set.all()
 
+    def get_image_upload_url(self):
+        return reverse("recipes:recipe-ingredient-image-upload", kwargs={"parent_id": self.id})
+
 
 def recipe_ingredient_image_upload_handler(instance, filename):
     fpath = pathlib.Path(filename)
