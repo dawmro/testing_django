@@ -73,6 +73,10 @@ class MealTestCase(TestCase):
         qs2 = Meal.objects.by_user_id(self.user_a_id).pending()
         self.assertEqual(qs2.count(), 1)
 
-
+    def test_completed_meals(self):
+        qs1 = Meal.objects.all().completed()
+        self.assertEqual(qs1.count(), 1)
+        qs2 = Meal.objects.by_user_id(self.user_a_id).completed()
+        self.assertEqual(qs2.count(), 1)
 
     
