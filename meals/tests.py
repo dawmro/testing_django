@@ -15,9 +15,9 @@ User = get_user_model()
 class MealTestCase(TestCase):
     def setUp(self):
         self.user_a = User.objects.create_user('adam', password='pass1234')
-        self.user_a_id = self.user_a
+        self.user_a_id = self.user_a.id
         self.user_b = User.objects.create_user('badam', password='pass1234')
-        self.user_b_id = self.user_b
+        self.user_b_id = self.user_b.id
         self.recipe_a = Recipe.objects.create(
             name = 'Grilled Chicken',
             user = self.user_a
@@ -25,6 +25,10 @@ class MealTestCase(TestCase):
         self.recipe_b = Recipe.objects.create(
             name = 'Grilled Chicken Tacos',
             user = self.user_b
+        )
+        self.recipe_c = Recipe.objects.create(
+            name = 'Grilled Pork',
+            user = self.user_a
         )
         self.recipe_ingredient_a1 = RecipeIngredient.objects.create(
             recipe=self.recipe_a,
@@ -78,5 +82,17 @@ class MealTestCase(TestCase):
         self.assertEqual(qs1.count(), 1)
         qs2 = Meal.objects.by_user_id(self.user_a_id).completed()
         self.assertEqual(qs2.count(), 1)
+
+    def test_add_item_via_toggle(self):
+        meal_b = Meal.objects.create(
+            user=self.user_a,
+            recipe=self.recipe_a,
+        )
+        qs2 = Meal.objects.by_user_id(self.user_a_id).pending()
+        self.assertEqual(qs2.count(), 2)
+        added = Meal.objects.toggle_in_queue(user_id=self.user_a_id, recipe_id=self.recipe_c.id)
+        qs3 = Meal.objects.by_user_id(self.user_a_id).pending()
+        self.assertEqual(qs3.count(), 3)
+        self.assertTrue(added)
 
     
