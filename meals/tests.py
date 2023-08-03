@@ -95,4 +95,10 @@ class MealTestCase(TestCase):
         self.assertEqual(qs3.count(), 3)
         self.assertTrue(added)
 
+    def test_remove_item_via_toggle(self):
+        added = Meal.objects.toggle_in_queue(user_id=self.user_a_id, recipe_id=self.recipe_a.id)
+        qs3 = Meal.objects.by_user_id(self.user_a_id).pending()
+        self.assertEqual(qs3.count(), 0)
+        self.assertFalse(added)
+
     
