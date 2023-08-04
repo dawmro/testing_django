@@ -4,11 +4,12 @@
 <h1>My Recipes!</h1>
 
 <h2><a href="{% url 'recipes:create' %}">Create Recipe</a></h2>
+<hr/>
 <h2>More recipes:</h2>
 {% for recipe in object_list %}
     {% if recipe.name %}
-        <div>
-            <a href='{{ recipe.get_absolute_url }}'>{{ recipe.name }}</a>
+        <div class="mb-3">
+            <a class="lead" href='{{ recipe.get_absolute_url }}'>{{ recipe.name }}</a>
             <div hx-get='{% url "meal-toggle" recipe_id=recipe.id %}' hx-trigger="revealed"></div>
         </div>
     {% endif %}
