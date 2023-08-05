@@ -7,6 +7,9 @@ from django.urls import reverse
 
 from .utils import slugify_instance_title
 
+from meals.utils import generate_meal_queue_total
+from meals.signals import meal_added, meal_removed
+
 # Create your models here.
 
 # declare user model
@@ -80,3 +83,17 @@ def article_post_save(sender, instance, created, *args, **kwargs):
 
 # connect post_save signal to article_pre_save receiver function every time after Article instance is saved
 post_save.connect(article_post_save, sender=Article)
+
+
+# vvv custom signal usage example
+def meal_added_rec(sender, instance, *args, **kwargs):
+    # print("Added:", args, kwargs)
+    user = instance.user
+    data = generate_meal_queue_total(user)
+    print(data)
+meal_added.connect(meal_added_rec)
+
+def meal_removed_rec(*args, **kwargs):
+    print("Removed:", args, kwargs)
+meal_removed.connect(meal_removed_rec)
+# ^^^ custom signal usage example

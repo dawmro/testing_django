@@ -3,6 +3,7 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from recepies.models import Recipe
 
+from .signals import meal_added, meal_removed
 
 # Create your models here.
 
@@ -97,6 +98,15 @@ class Meal(models.Model):
 
 
 def meal_post_save(sender, instance, created, *args, **kwargs):
-    pass
+    if instance.status != instance.prev_status:
+        if instance.status == MealStatus.PENDING:
+            meal_added.send(sender=sender, instance=instance)
+        if instance.status == MealStatus.ABORTED:
+            meal_removed.send(sender=sender, instance=instance)   
+        instance.prev_status = instance.status
+        instance.save()
 
 post_save.connect(meal_post_save, sender=Meal)
+
+
+
