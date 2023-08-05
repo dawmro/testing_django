@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.db.models.signals import post_save
 from recepies.models import Recipe
 
 
@@ -69,7 +70,9 @@ class MealManager(models.Manager):
         added = None
         if already_queued:
             recipe_qs = qs.filter(recipe_id=recipe_id)
-            recipe_qs.update(status=MealStatus.ABORTED)
+            for instance in recipe_qs:
+                instance.status = MealStatus.ABORTED
+                instance.save()
             added = False
         else:
             obj = self.model(
@@ -88,5 +91,12 @@ class Meal(models.Model):
     timestamp = models.DateField(auto_now_add=True)
     updated = models.DateField(auto_now=True)
     status = models.CharField(max_length=1, choices=MealStatus.choices, default=MealStatus.PENDING)
+    prev_status = models.CharField(max_length=1, null=True, choices=MealStatus.choices, default=None)
 
     objects = MealManager()
+
+
+def meal_post_save(sender, instance, created, *args, **kwargs):
+    pass
+
+post_save.connect(meal_post_save, sender=Meal)
